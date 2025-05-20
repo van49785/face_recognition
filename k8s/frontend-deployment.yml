@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: face-recognition-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: face-recognition-frontend
+  template:  # Đưa template vào đúng vị trí
+    metadata:
+      labels:
+        app: face-recognition-frontend
+    spec:
+      containers:
+        - name: face-recognition-frontend
+          image: ${DOCKER_USERNAME}/face_recognition-frontend:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: face-recognition-frontend
+spec:
+  selector:
+    app: face-recognition-frontend
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer

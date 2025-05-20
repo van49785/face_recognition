@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: attendance-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: attendance-db
+  template:  # Đưa template vào đúng vị trí
+    metadata:
+      labels:
+        app: attendance-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:13  # Sửa lỗi chính tả
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: ${POSTGRES_USER}
+            - name: POSTGRES_PASSWORD
+              value: ${POSTGRES_PASSWORD}
+            - name: POSTGRES_DB
+              value: ${POSTGRES_DB}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: attendance-db
+spec:
+  selector:
+    app: attendance-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP

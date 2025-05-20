@@ -1,0 +1,10 @@
+flask
+flask-sqlalchemy
+psycopg2-binary
+face_recognition
+git+https://github.com/ageitgey/face_recognition_models
+opencv-python
+numpy
+flask-cors
+python-dotenv
+

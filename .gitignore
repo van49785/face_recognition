@@ -1,0 +1,29 @@
+# Python virtual environment
+./backend/.venv/
+__pycache__/
+*.pyc
+
+# Python env file (chứa thông tin nhạy cảm)
+./backend/.env
+.env
+
+# VSCode settings (nếu có)
+.vscode/
+
+# Dữ liệu tạm
+data/
+
+# Node modules (nếu frontend dùng Node.js)
+./frontend/node_modules/
+
+# Build artifacts (nếu có)
+dist/
+build/
+
+# Docker/Compose logs hoặc tạm
+*.log
+*.pid
+
+# OS/system files
+.DS_Store
+Thumbs.db

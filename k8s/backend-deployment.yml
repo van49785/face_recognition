@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: face-recognition-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: face-recognition-backend
+  template:  
+    metadata:
+      labels:
+        app: face-recognition-backend
+    spec:
+      containers:
+        - name: face-recognition-backend
+          image: ${DOCKER_USERNAME}/face_recognition-backend:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE_URL
+              value: ${DATABASE_URL}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: face-recognition-backend
+spec:
+  selector:
+    app: face-recognition-backend
+  ports:
+    - port: 5000
+      targetPort: 5000
+  type: ClusterIP
