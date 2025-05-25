@@ -14,9 +14,17 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - DATABASE_URL=postgresql://nguyenvan:nguyenvan09@db:5432/attendance
+      - DATABASE_URL=${DATABASE_URL}
+      - USE_S3=${USE_S3:-false}
+      - S3_BUCKET=${S3_BUCKET:-face-attendance-bucket}
+      - AWS_ACCESS_KEY_ID = ${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY = ${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION = ${AWS_REGION:-ap-southeast-1}
   frontend:
-    build: ./frontend/face-recognition
+    build: 
+      context: ./frontend/face-recognition
+      args:
+        REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL}
     image: ${DOCKER_USERNAME}/face_recognition-frontend:latest
     ports:
       - "80:80"

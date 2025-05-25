@@ -5,3 +5,4 @@ __pycache__/
 *.pyd
 .env
 backend/.venv
+last_uploaded.jpg

@@ -7,14 +7,14 @@ spec:
   selector:
     matchLabels:
       app: attendance-db
-  template:  # Đưa template vào đúng vị trí
+  template:  
     metadata:
       labels:
         app: attendance-db
     spec:
       containers:
         - name: postgres
-          image: postgres:13  # Sửa lỗi chính tả
+          image: postgres:13  
           ports:
             - containerPort: 5432
           env:

@@ -39,6 +39,8 @@ function App() {
     severity: "info"
   });
 
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
   useEffect(() => {
     fetchAttendance();
     fetchDebugInfo();
@@ -46,7 +48,7 @@ function App() {
 
   const fetchDebugInfo = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/debug-info");
+      const response = await axios.get(`${backendUrl}/debug-info`);
       setDebugInfo(response.data);
     } catch (error) {
       console.error("Lỗi lấy thông tin debug", error);
@@ -56,7 +58,7 @@ function App() {
   const reloadDatabase = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:5000/reload-database");
+      const response = await axios.post(`${backendUrl}/reload-database`);
       setDebugInfo(response.data);
       setSnackbar({
         open: true,
@@ -85,7 +87,7 @@ function App() {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:5000/recognize", { image: imageSrc });
+      const response = await axios.post(`${backendUrl}/recognize`, { image: imageSrc });
       setResult(response.data);
       fetchAttendance();
     } catch (error) {
@@ -114,7 +116,7 @@ function App() {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:5000/upload-recognize", { image: uploadedImage });
+      const response = await axios.post(`${backendUrl}/upload-recognize`, { image: uploadedImage });
       setResult(response.data);
       fetchAttendance();
     } catch (error) {
@@ -126,7 +128,7 @@ function App() {
 
   const fetchAttendance = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/attendance");
+      const response = await axios.get(`${backendUrl}/attendance`);
       setAttendance(response.data);
     } catch (error) {
       console.error("Lỗi tải danh sách điểm danh", error);

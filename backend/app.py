@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 import base64
 import os
+import boto3
+from botocore.exceptions import ClientError
 import json
 import logging  
 from datetime import datetime, timezone
@@ -30,21 +32,29 @@ class Attendance(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
 # Load known faces
-known_faces = []
-known_names = []
+# known_faces = []
+# known_names = []
 
 def load_face_database():
     global known_faces, known_names
     known_faces = []
     known_names = []
+    use_s3 = os.getenv('USE_S3', 'false').lower() == 'true'
+    s3_client = boto3.client('s3') if use_s3 else None 
+    bucket_name = os.getenv('S3_BUCKET', 'face-attendance-bucket')
     try:
         with open('data/employees.json') as f:
             employees = json.load(f)
             logging.info(f"Đang tải {len(employees)} nhân viên từ employees.json")
             for emp in employees:
                 try:
-                    img_path = f"data/know_faces/{emp['image']}"
-                    logging.info(f"Đang tải ảnh: {img_path}")
+                    if use_s3 and s3_client:
+                        s3_client.download_file(bucket_name, f"known_faces/{emp['image']}", f"/tmp/{emp['image']}")
+                        img_path = f"/tmp/{emp['image']}"
+                        logging.info(f"Đang tải ảnh từ S3: {img_path}")
+                    else:
+                        img_path = f"data/know_faces/{emp['image']}"
+                        logging.info(f"Đang tải ảnh: {img_path}")
                     img = face_recognition.load_image_file(img_path)
                     encodings = face_recognition.face_encodings(img)
                     if encodings:

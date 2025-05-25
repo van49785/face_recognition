@@ -7,4 +7,5 @@ opencv-python
 numpy
 flask-cors
 python-dotenv
+boto3
 

@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: face-recognition-frontend
-  template:  # Đưa template vào đúng vị trí
+  template: 
     metadata:
       labels:
         app: face-recognition-frontend
